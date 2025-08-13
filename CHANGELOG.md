@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/henryjarend/test-repo/compare/v1.0.0...v1.1.0) (2025-08-13)
+
+
+### Features
+
+* update outputs ([0bd385f](https://github.com/henryjarend/test-repo/commit/0bd385fd05249a3874ebdee79c99e5e4163fa1af))
+
 # 1.0.0 (2025-08-13)
 
 
