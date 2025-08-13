@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - master
   pull_request:
     branches:
       - main
+      - master
 
 jobs:
   release:
@@ -16,16 +18,17 @@ jobs:
       new-release-published: ${{ steps.semantic.outputs.new-release-published }}
       new-release-version: ${{ steps.semantic.outputs.new-release-version }}
       new-release-notes: ${{ steps.semantic.outputs.new-release-notes }}
-    permissions:
-      contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '18'
 
       - name: Install semantic-release
         run: |
@@ -36,13 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx semantic-release || true
-          if [ -f .release-version ]; then
-            echo "new-release-version=$(cat .release-version)" >> $GITHUB_OUTPUT
-            echo "new-release-published=true" >> $GITHUB_OUTPUT
-          else
-            echo "new-release-published=false" >> $GITHUB_OUTPUT
-          fi
+          npx semantic-release --dry-run=false
         
   chart-release:
     runs-on: ubuntu-latest
@@ -50,7 +47,7 @@ jobs:
     if: needs.release.outputs.new-release-published == 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -61,7 +58,9 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
-        uses: azure/setup-helm@v4.3.0
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.12.1'
 
       - name: Update Chart Version
         run: |
@@ -76,17 +75,30 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
+      - name: Update GitHub Pages Index
+        run: |
+          # Fetch the updated index.yaml from gh-pages branch
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+          
+          # The chart-releaser action automatically updates index.yaml
+          # We can add custom updates here if needed
+          
+          git add index.yaml
+          git commit -m "Update Helm repository index for version ${{ needs.release.outputs.new-release-version }}" || exit 0
+          git push origin gh-pages
+
   validate:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install Helm
-        uses: azure/setup-helm@v4.3.0
+        uses: azure/setup-helm@v3
         with:
           version: '3.12.1'
 
