@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - master
   pull_request:
     branches:
       - main
-      - master
 
 jobs:
   release:
@@ -18,12 +16,11 @@ jobs:
       new-release-published: ${{ steps.semantic.outputs.new-release-published }}
       new-release-version: ${{ steps.semantic.outputs.new-release-version }}
       new-release-notes: ${{ steps.semantic.outputs.new-release-notes }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v5.0.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
