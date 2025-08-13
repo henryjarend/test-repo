@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/henryjarend/test-repo/compare/v1.1.0...v1.2.0) (2025-08-13)
+
+
+### Bug Fixes
+
+* add permissions to release workflow ([72e4037](https://github.com/henryjarend/test-repo/commit/72e40378b18bbe4de8ba2da3bbff12385345344a))
+
+
+### Features
+
+* update workflow with ai generated version ([ddf09fb](https://github.com/henryjarend/test-repo/commit/ddf09fb4448fc2b206c67f0a3f4a7d7d04732383))
+
 # [1.1.0](https://github.com/henryjarend/test-repo/compare/v1.0.0...v1.1.0) (2025-08-13)
 
 
