@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/henryjarend/test-repo/compare/v1.2.0...v1.3.0) (2025-08-13)
+
+
+### Features
+
+* remove conditional on chart-release workflow ([d071625](https://github.com/henryjarend/test-repo/commit/d0716258bfd05a1aace3cd4751bce6ff370291a8))
+
 # [1.2.0](https://github.com/henryjarend/test-repo/compare/v1.1.0...v1.2.0) (2025-08-13)
 
 
